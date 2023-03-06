@@ -45,6 +45,8 @@ jobs:
 
     - name: Build
       uses: docker/build-push-action@v4
+      env:
+        build-args: ${{ steps.download.outputs }}
       with:
         context: .
         platforms: |
@@ -53,4 +55,4 @@ jobs:
           linux/arm/v7
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/test:latest
-        build-args: ${{ steps.download.outputs }}
+        build-args: ${{ build-args }}
