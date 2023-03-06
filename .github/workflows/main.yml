@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  build:
+  prepare:
 
     runs-on: ubuntu-latest
 
@@ -35,17 +35,27 @@ jobs:
       uses: dcarbone/install-jq-action@v1.0.1
 
     - name: Download a file
+      id: download
       run: |
         SONARR_RELEASE=$(curl -sL "https://services.sonarr.tv/v1/download/main?version=3&os=linux" | jq -r '.version')
         sonarr_url="https://services.sonarr.tv/v1/download/main/latest?version=3&os=linux"
-        echo "SONARR_RELEASE=${SONARR_RELEASE}"
-        echo "sonarr_url=${sonarr_url}"
+        echo "SONARR_RELEASE=${SONARR_RELEASE}" >> $GITHUB_OUTPUT
+        echo "sonarr_url=${sonarr_url}" >> $GITHUB_OUTPUT
         wget $sonarr_url -o sonarr.tgz
 
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
     - name: Build
       uses: docker/build-push-action@v4
       with:
         context: .
-        platforms: linux/amd64,linux/arm64,linux/arm/v7
+        platforms: |
+          linux/amd64
+          linux/arm64
+          linux/arm/v7
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/test:latest
+        build-args: ${{ steps.download.outputs }}
