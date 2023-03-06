@@ -31,6 +31,15 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
+    - name: Download a file
+      run: |
+        apt install jq curl
+        SONARR_RELEASE=$(curl -sL "https://services.sonarr.tv/v1/download/main?version=3&os=linux" | jq -r '.version')
+        sonarr_url="https://services.sonarr.tv/v1/download/main/latest?version=3&os=linux"
+        echo "SONARR_RELEASE=${SONARR_RELEASE}"
+        echo "sonarr_url=${sonarr_url}"
+        wget $sonarr_url -o sonarr.tgz
+
     - name: Build
       uses: docker/build-push-action@v4
       with:
