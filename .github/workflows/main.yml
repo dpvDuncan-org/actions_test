@@ -32,7 +32,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Install jq
-      uses: dcarbone/install-jq-action@v1
+      uses: dcarbone/install-jq-action@v1.0.1
 
     - name: Download a file
       run: |
