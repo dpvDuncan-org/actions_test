@@ -43,11 +43,6 @@ jobs:
         echo "sonarr_url=${sonarr_url}" >> $GITHUB_OUTPUT
         wget $sonarr_url -o sonarr.tgz
 
-  build:
-
-    runs-on: ubuntu-latest
-
-    steps:
     - name: Build
       uses: docker/build-push-action@v4
       with:
