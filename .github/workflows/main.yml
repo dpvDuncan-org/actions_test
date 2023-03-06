@@ -55,4 +55,6 @@ jobs:
           linux/arm/v7
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/test:latest
-        build-args: ${{ env.build-args }}
+        build-args: |
+          SONARR_RELEASE=${{ steps.download.outputs.SONARR_RELEASE }}
+          sonarr_url=${{ steps.download.outputs.sonarr_url }}
