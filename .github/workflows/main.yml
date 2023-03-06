@@ -45,8 +45,6 @@ jobs:
 
     - name: Build
       uses: docker/build-push-action@v4
-      env:
-        build-args: ${{ steps.download.outputs }}
       with:
         context: .
         platforms: |
